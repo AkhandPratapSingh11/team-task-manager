@@ -1,13 +1,16 @@
+import MainLayout from "../../layouts/MainLayout"
+
 function Projects() {
 
   return (
 
-    <div className="min-h-screen flex items-center justify-center text-4xl font-bold">
+    <MainLayout>
 
-      Projects Page
+      <h1 className="text-4xl font-bold">
+        Projects Page
+      </h1>
 
-    </div>
-
+    </MainLayout>
   )
 }
 
