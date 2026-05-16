@@ -1,8 +1,77 @@
+import { useEffect, useState } from "react"
+
+import axiosInstance from "../../api/axios"
+
 import MainLayout from "../../layouts/MainLayout"
 
 import DashboardCard from "../../components/DashboardCard"
 
 function Dashboard() {
+
+  const [stats, setStats] = useState(null)
+
+  const [loading, setLoading] = useState(true)
+
+  const [error, setError] = useState("")
+
+
+  useEffect(() => {
+
+    fetchDashboardData()
+
+  }, [])
+
+
+  const fetchDashboardData = async () => {
+
+    try {
+
+      const response = await axiosInstance.get(
+        "/dashboard/"
+      )
+
+      setStats(response.data)
+
+    } catch (error) {
+
+      setError("Failed to load dashboard data")
+
+    } finally {
+
+      setLoading(false)
+    }
+  }
+
+
+  if (loading) {
+
+    return (
+
+      <MainLayout>
+
+        <div className="text-2xl">
+          Loading dashboard...
+        </div>
+
+      </MainLayout>
+    )
+  }
+
+
+  if (error) {
+
+    return (
+
+      <MainLayout>
+
+        <div className="text-red-500 text-2xl">
+          {error}
+        </div>
+
+      </MainLayout>
+    )
+  }
+
 
   return (
 
@@ -16,22 +85,31 @@ function Dashboard() {
 
         <DashboardCard
           title="Total Tasks"
-          value="12"
+          value={stats.total_tasks}
         />
 
         <DashboardCard
           title="Completed"
-          value="5"
+          value={stats.completed_tasks}
         />
 
         <DashboardCard
           title="Pending"
-          value="4"
+          value={stats.pending_tasks}
         />
 
         <DashboardCard
+          title="In Progress"
+          value={stats.in_progress_tasks}
+        />
+
+      </div>
+
+      <div className="grid grid-cols-4 gap-6 mt-6">
+
+        <DashboardCard
           title="Overdue"
-          value="3"
+          value={stats.overdue_tasks}
         />
 
       </div>
